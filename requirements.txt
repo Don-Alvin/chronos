@@ -1,0 +1,10 @@
+# Kafka
+kafka-python
+
+# Redis
+redis
+
+# FastAPI
+fastapi
+uvicorn
+websockets
