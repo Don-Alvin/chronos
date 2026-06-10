@@ -1,1 +1,17 @@
 *.env
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pkl
+
+# Model artifacts (too large for Git)
+model_artifacts/
+
+# VS Code
+.vscode/
+
+# Docker volumes data
+postgres_data/
+redis_data/

@@ -8,3 +8,23 @@ redis
 fastapi
 uvicorn
 websockets
+
+# Data and ML
+pandas
+scikit-learn
+numpy
+xgboost
+
+# Database
+pyscopg2-binary
+sqlalchemy
+
+# Validaion
+pydantic
+
+# Utilities
+python-dotenv
+uuid
+
+# Monitoring
+prometheus-client
