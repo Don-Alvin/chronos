@@ -304,8 +304,8 @@ VALID_EVENT_TYPES: set[str] = {
 RISK_THRESHOLDS = {
     "LOW":      (0.00, 0.40),
     "MEDIUM":   (0.40, 0.60),
-    "HIGH":     (0.60, 0.75),
-    "CRITICAL": (0.75, 1.00),
+    "HIGH":     (0.60, 0.80),
+    "CRITICAL": (0.80, 1.00),
 }
 
 INTERVENTION_THRESHOLD = 0.60    # trigger intervention at HIGH and above
