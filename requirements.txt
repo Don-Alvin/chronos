@@ -16,7 +16,7 @@ numpy
 xgboost
 
 # Database
-pyscopg2-binary
+psycopg2-binary
 sqlalchemy
 
 # Validaion
