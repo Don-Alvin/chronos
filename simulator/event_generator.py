@@ -94,20 +94,23 @@ class UserState:
 # CHURN DECISION
 # ─────────────────────────────────────────────────────────────
 
-def should_churn(user: UserState) -> bool:
+CHURN_HORIZON_DAYS = 30   # churn_probability means "risk over 30 days"
+
+def should_churn(user: UserState, ticks_per_day: int) -> bool:
     """
-    Decides whether a user churns at this moment.
+    Decides whether a user churns at this tick.
 
-    Called once per simulation tick per user.
-    Uses the user's current churn probability as the
-    probability of churning in this tick.
-
-    Once churned, a user never generates events again.
+    current_churn_probability() is interpreted as the probability
+    of churning within CHURN_HORIZON_DAYS of simulated time.
+    We spread that probability across every tick in the horizon,
+    so churn speed scales correctly with simulation speed.
     """
     if user.churned:
         return False
-    churn_prob = user.current_churn_probability()
-    return random.random() < (churn_prob / 1000)
+
+    churn_prob   = user.current_churn_probability()
+    per_tick_prob = churn_prob / (CHURN_HORIZON_DAYS * ticks_per_day)
+    return random.random() < per_tick_prob
 
 
 # ─────────────────────────────────────────────────────────────
@@ -273,7 +276,7 @@ def generate_event(user: UserState, ticks_per_day: int = 8_640_000) -> Optional[
         return None
 
     # check if user churns this tick
-    if should_churn(user):
+    if should_churn(user, ticks_per_day):
         user.churned         = True
         user.churn_timestamp = int(time.time())
         return None

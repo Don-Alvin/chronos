@@ -35,6 +35,7 @@ KAFKA_TOPIC             = os.getenv("KAFKA_TOPIC", "user-events")
 NUM_USERS               = int(os.getenv("NUM_USERS", 1000))
 EVENTS_PER_SECOND       = int(os.getenv("EVENTS_PER_SECOND", 100))
 STATS_INTERVAL_SECONDS  = 10
+TIME_ACCELERATION_FACTOR   = int(os.getenv("TIME_ACCELERATION_FACTOR", 1))
 
 
 # ─────────────────────────────────────────────────────────────
@@ -178,7 +179,7 @@ def run(
     # ticks_per_day at the target rate
     # if EVENTS_PER_SECOND=100, each second = 100 ticks
     # each real second represents 100/86400 of a simulated day
-    ticks_per_day    = EVENTS_PER_SECOND * SECONDS_PER_DAY
+    ticks_per_day    = (EVENTS_PER_SECOND * SECONDS_PER_DAY) // TIME_ACCELERATION_FACTOR
     sleep_per_tick   = 1.0 / EVENTS_PER_SECOND
 
     logger.info(
@@ -215,9 +216,9 @@ def run(
         # if all users have churned, regenerate the pool
         if len(active_users) == 0:
             logger.warning("All users churned — regenerating user pool")
-            users = create_user_pool(NUM_USERS)
-            for user in users:
-                users.append(user)
+            if len(active_users) == 0:
+                logger.warning("All users churned — regenerating user pool")
+                users = create_user_pool(NUM_USERS)
 
         # sleep to maintain tick rate
         tick_elapsed = time.time() - tick_start
