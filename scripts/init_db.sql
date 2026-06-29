@@ -17,12 +17,13 @@ CREATE TABLE feature_snapshots(
     total_support_tickets INT NOT NULL,
     total_discounts_used INT NOT NULL,
     total_feedback_submitted INT NOT NULL,
+    total_settings_changes INT NOT NULL,
     total_password_resets INT NOT NULL,
     is_trial_user SMALLINT NOT NULL,
     avg_session_duration_mins REAL NOT NULL,
     label SMALLINT,
     labeled_at BIGINT,
-    created_at TIMESTAMPZ NOT NULL DEFAULT now(),
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     CONSTRAINT uq_user_snapshot UNIQUE (user_id, snapshot_ts),
     CONSTRAINT chk_label CHECK (label IN (0, 1))
 );
