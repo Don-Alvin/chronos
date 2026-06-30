@@ -1,5 +1,7 @@
 from features.contract import FEATURES, FEATURE_REDIS_KEYS
 
+KNOWN_USERS_KEY = "known_users"
+
 def feature_key(user_id: str, feature_name: str) -> str:
     template = FEATURE_REDIS_KEYS[feature_name]
     return template.replace("{user_id}", user_id)

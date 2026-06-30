@@ -7,7 +7,7 @@ from features.contract import (
     FEATURES,
     FeatureType
 )
-from features.redis_keys import processed_event_key
+from features.redis_keys import processed_event_key, KNOWN_USERS_KEY
 from features.strategies import (
     apply_counter,
     apply_window_counter,
@@ -100,6 +100,8 @@ def process_event(redis_client: Redis, event: dict) -> bool:
     if already_processed(redis_client, event_id):
         logger.debug(f"Skipping duplicate event {event_id}")
         return False
+    
+    redis_client.sadd(KNOWN_USERS_KEY, user_id)
     
     # Generic feature updates
     for feature_name in EVENT_TO_FEATURES.get(event_type, []):
